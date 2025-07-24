@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "vercel-build": "vite build",
     "start": "node server/index.ts",
     "check": "tsc --noEmit",
     "db:push": "drizzle-kit push:sqlite"
