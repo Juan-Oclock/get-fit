@@ -4,13 +4,12 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "dev": "NODE_ENV=development dotenv -e .env.local -- tsx server/index.ts",
+    "dev": "vite",
     "build": "vite build",
     "vercel-build": "vite build",
-    "start": "NODE_ENV=production node dist/index.js",
-    "check": "tsc",
-    "db:push": "dotenv -e .env.local -- drizzle-kit push",
-    "heroku-postbuild": "npm run build"
+    "start": "node server/index.ts",
+    "check": "tsc --noEmit",
+    "db:push": "drizzle-kit push:sqlite"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -109,7 +108,7 @@
     "tailwindcss": "^3.4.17",
     "tsx": "^4.20.3",
     "typescript": "5.6.3",
-    "vite": "^5.4.19",
+    "vite": "^4.5.0"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8"
