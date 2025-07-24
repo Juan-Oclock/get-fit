@@ -1,65 +1,67 @@
-import { useState } from "react";
-import { supabase } from "../lib/supabaseClient"; // Adjust path if needed
+import { useState } from 'react'
 
 interface AvatarUploaderProps {
   user: {
-    id: string;
-  };
+    id: string
+  }
 }
 
 export default function AvatarUploader({ user }: AvatarUploaderProps) {
-  const [uploading, setUploading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+    const file = event.target.files?.[0]
+    if (!file) return
 
-    setUploading(true);
-    setError(null);
+    setUploading(true)
+    setError(null)
 
-    const fileExt = file.name.split('.').pop();
-    const filePath = `${user.id}.${fileExt}`;
+    const fileExt = file.name.split('.').pop()
+    const filePath = `${user.id}.${fileExt}`
+
+    // Dynamic import for supabase
+    const { supabase } = await import('../lib/supabaseClient')
 
     // Upload to Supabase Storage (upsert: true allows overwrite)
     const { error: uploadError } = await supabase
       .storage
       .from('avatars')
-      .upload(filePath, file, { upsert: true });
+      .upload(filePath, file, { upsert: true })
 
     if (uploadError) {
-      setError("Upload failed: " + uploadError.message);
-      setUploading(false);
-      return;
+      setError('Upload failed: ' + uploadError.message)
+      setUploading(false)
+      return
     }
 
     // Get the public URL
     const { data } = supabase
       .storage
       .from('avatars')
-      .getPublicUrl(filePath);
-    const publicUrl = data.publicUrl;
+      .getPublicUrl(filePath)
+    const publicUrl = data.publicUrl
 
     // Update the user's profile_image_url in the users table
     const { error: updateError } = await supabase
       .from('users')
       .update({ profile_image_url: publicUrl })
-      .eq('id', user.id);
+      .eq('id', user.id)
 
     if (updateError) {
-      setError("Profile update failed: " + updateError.message);
+      setError('Profile update failed: ' + updateError.message)
     } else {
-      setError(null);
-      alert("Avatar uploaded and profile updated!");
+      setError(null)
+      alert('Avatar uploaded and profile updated!')
     }
-    setUploading(false);
-  };
+    setUploading(false)
+  }
 
   return (
     <div>
-      <input type="file" accept="image/*" onChange={handleFileChange} disabled={uploading} />
+      <input type='file' accept='image/*' onChange={handleFileChange} disabled={uploading} />
       {uploading && <p>Uploading...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
-  );
+  )
 }

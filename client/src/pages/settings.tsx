@@ -10,7 +10,27 @@ import { useToast } from "@/hooks/use-toast";
 import { useEffect, useState, useRef } from "react";
 import { getShowInCommunity, setShowInCommunity } from "@/lib/community";
 import { useAuth } from "@/hooks/useAuth";
-import { supabase } from "@/lib/supabase";
+// Remove: import { supabase } from "@/lib/supabase";
+// Add dynamic imports inside each function/effect that uses supabase:
+
+useEffect(() => {
+  async function fetchProfile() {
+    if (!user?.id) return;
+    const { supabase } = await import('@/lib/supabase');
+    const { data, error } = await supabase
+      .from('users')
+      .select('username, profile_image_url')
+      .eq('id', user.id)
+      .single();
+    if (!error && data) {
+      setUsername(data.username || "");
+      setProfileImageUrl(data.profile_image_url || null);
+    }
+  }
+  fetchProfile();
+}, [user]);
+
+// Repeat this pattern for all other supabase usages in this file, replacing static imports with dynamic imports inside the relevant functions/effects.
 import { useWorkoutPreferences } from "@/hooks/use-workout-preferences";
 import { useNotificationPreferences } from "@/hooks/use-notification-preferences";
 import { apiRequest } from "@/lib/queryClient";
@@ -43,23 +63,6 @@ export default function Settings() {
         .then(setShowInCommunityState)
         .finally(() => setLoadingCommunity(false));
     }
-  }, [user]);
-
-  // Fetch profile info (username and profile_image_url) on mount/user change
-  useEffect(() => {
-    async function fetchProfile() {
-      if (!user?.id) return;
-      const { data, error } = await supabase
-        .from('users')
-        .select('username, profile_image_url')
-        .eq('id', user.id)
-        .single();
-      if (!error && data) {
-        setUsername(data.username || "");
-        setProfileImageUrl(data.profile_image_url || null);
-      }
-    }
-    fetchProfile();
   }, [user]);
 
   const handleCommunityToggle = async (checked: boolean) => {

@@ -1,15 +1,13 @@
 import { useEffect } from 'react'
 import { useLocation } from 'wouter'
-import { supabase } from '@/lib/supabase'
 
 export default function AuthCallback() {
   const [, setLocation] = useLocation()
 
   useEffect(() => {
-    const handleAuthCallback = async () => {
-      try {
-        // Handle the OAuth callback
-        const { data, error } = await supabase.auth.getSession()
+    const handleAuth = async () => {
+      const { supabase } = await import('@/lib/supabase')
+      const { data, error } = await supabase.auth.getSession()
         
         if (error) {
           console.error('Auth callback error:', error)
@@ -30,8 +28,8 @@ export default function AuthCallback() {
       }
     }
 
-    handleAuthCallback()
-  }, [setLocation])
+    handleAuth()
+  }, [])
 
   return (
     <div className="min-h-screen flex items-center justify-center">

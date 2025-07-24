@@ -4,7 +4,24 @@ import { User, Dumbbell } from 'lucide-react';
 import { CommunityFeedItem } from './community-feed-item';
 import { ActiveUserCountLabel } from './active-user-count-label';
 
-import { supabase } from '@/lib/supabase';
+// Remove: import { supabase } from '@/lib/supabase';
+// Add below inside each function or effect that uses supabase:
+
+useEffect(() => {
+  async function fetchOptIn() {
+    if (!user?.id) return;
+    const { supabase } = await import('@/lib/supabase');
+    const { data, error } = await supabase
+      .from('users')
+      .select('show_in_community')
+      .eq('id', user.id)
+      .single();
+    if (!error && data) setOptedIn(!!data.show_in_community);
+  }
+  fetchOptIn();
+}, [user]);
+
+// Repeat this pattern for all other supabase usages in this file, replacing static imports with dynamic imports inside the relevant functions/effects.
 import { useAuth } from '@/hooks/useAuth';
 
 interface CommunityUserActivity {
