@@ -2,12 +2,10 @@
 const CACHE_NAME = 'fittracker-v1'
 const urlsToCache = [
   '/',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
-  '/manifest.json'
+  '/manifest.json',
+  '/favicon.svg',
 ]
 
-// Install service worker
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -21,18 +19,15 @@ self.addEventListener('install', event => {
   )
 })
 
-// Fetch event
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then(response => {
-        // Return cached version or fetch from network
         return response || fetch(event.request)
       })
   )
 })
 
-// Activate service worker
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
