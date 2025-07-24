@@ -1,0 +1,330 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Mobile optimizations */
+@media (max-width: 1024px) {
+  /* Improve touch targets */
+  button, 
+  a, 
+  .cursor-pointer {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better text readability on mobile */
+  body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  /* Smooth scrolling */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="password"],
+  textarea,
+  select {
+    font-size: 16px;
+  }
+}
+
+:root {
+  /* New color scheme */
+  --background: #090C11;
+  --foreground: #ffffff;
+  --muted: #262B32;
+  --muted-foreground: #ffffff;
+  --popover: #262B32;
+  --popover-foreground: #ffffff;
+  --card: #262B32;
+  --card-foreground: #ffffff;
+  --border: #3a3f47;
+  --input: #262B32;
+  --primary: #FFD300;
+  --primary-foreground: #090C11;
+  --secondary: #262B32;
+  --secondary-foreground: #ffffff;
+  --accent: #262B32;
+  --accent-foreground: #ffffff;
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: #ffffff;
+  --ring: #FFD300;
+  --radius: 0.75rem;
+  
+  /* Custom Colors */
+  --highlight: #FFD300;
+  --highlight-bright: #ffdd33;
+  --app-background: #090C11;
+  --card-background: #262B32;
+  --text-primary: #ffffff;
+}
+
+.dark {
+  /* Same colors for dark mode consistency */
+  --background: #090C11;
+  --foreground: #ffffff;
+  --muted: #111418;
+  --muted-foreground: #ffffff;
+  --popover: #111418;
+  --popover-foreground: #ffffff;
+  --card: #111418;
+  --card-foreground: #ffffff;
+  --border: #242730;
+  --input: #111418;
+  --primary: #FFD300;
+  --primary-foreground: #090C11;
+  --secondary: #111418;
+  --secondary-foreground: #ffffff;
+  --accent: #111418;
+  --accent-foreground: #ffffff;
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: #ffffff;
+  --ring: #FFD300;
+  --radius: 0.75rem;
+  
+  /* Custom Colors */
+  --highlight: #FFD300;
+  --highlight-bright: #ffdd33;
+  --app-background: #090C11;
+  --card-background: #111418;
+  --text-primary: #ffffff;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', 'SF Pro Display', system-ui, -apple-system, sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    font-variation-settings: 'opsz' 32;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+@layer components {
+  .highlight-gradient {
+    background: linear-gradient(135deg, var(--highlight) 0%, var(--highlight-bright) 100%);
+  }
+
+  .highlight-glow {
+    box-shadow: 0 0 20px rgba(255, 211, 0, 0.3), 0 0 40px rgba(255, 211, 0, 0.1);
+  }
+
+  .glass-morphism {
+    background: rgba(38, 43, 50, 0.8);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .dark .glass-morphism {
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.2s ease-out;
+  }
+
+  .animate-pulse-glow {
+    animation: pulseGlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@layer utilities {
+  .text-gradient-highlight {
+    background: linear-gradient(135deg, var(--highlight) 0%, var(--highlight-bright) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .border-gradient-highlight {
+    border-image: linear-gradient(135deg, var(--highlight) 0%, var(--highlight-bright) 100%) 1;
+  }
+
+  .shadow-highlight {
+    box-shadow: 0 0 10px rgba(255, 211, 0, 0.5);
+  }
+}
+
+@keyframes slideUp {
+  from { 
+    transform: translateY(20px); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translateY(0); 
+    opacity: 1; 
+  }
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+  }
+  to { 
+    opacity: 1; 
+  }
+}
+
+@keyframes scaleIn {
+  from { 
+    transform: scale(0.9); 
+    opacity: 0; 
+  }
+  to { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { 
+    box-shadow: 0 0 10px hsla(142, 86%, 46%, 0.3);
+  }
+  50% { 
+    box-shadow: 0 0 20px hsla(142, 86%, 46%, 0.6), 0 0 30px hsla(142, 86%, 46%, 0.3);
+  }
+}
+
+/* Custom scrollbar with highlight color */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--app-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--highlight);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--highlight-bright);
+}
+
+/* Focus styles with neon green */
+:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px hsla(142, 86%, 46%, 0.2);
+}
+
+/* Loading states with green theme */
+.skeleton {
+  background: linear-gradient(90deg, transparent, hsla(142, 86%, 46%, 0.1), transparent);
+  background-size: 200% 100%;
+  animation: loading 1.5s infinite;
+}
+
+.dark .skeleton {
+  background: linear-gradient(90deg, transparent, hsla(142, 86%, 46%, 0.2), transparent);
+  background-size: 200% 100%;
+}
+
+@keyframes loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Chart container responsive */
+.chart-container {
+  position: relative;
+  height: 400px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .chart-container {
+    height: 300px;
+  }
+}
+
+/* Touch-friendly buttons for mobile */
+@media (max-width: 768px) {
+  button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --border: hsl(0, 0%, 50%);
+  }
+  
+  .dark {
+    --border: hsl(0, 0%, 70%);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Line clamping utility */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
