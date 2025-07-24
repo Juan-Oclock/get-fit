@@ -6,9 +6,10 @@ export default function AuthCallback() {
 
   useEffect(() => {
     const handleAuth = async () => {
-      const { supabase } = await import('@/lib/supabase')
-      const { data, error } = await supabase.auth.getSession()
-        
+      try {
+        const { supabase } = await import('@/lib/supabase')
+        const { data, error } = await supabase.auth.getSession()
+
         if (error) {
           console.error('Auth callback error:', error)
           setLocation('/?error=auth_failed')
